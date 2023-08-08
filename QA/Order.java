@@ -103,6 +103,8 @@ public class Order {
 	}
 	
 	public static void outputFileOrder(ArrayList<Order> list) {
+		Order od = new Order();
+		
 		try {
 			FileWriter fWriter = new FileWriter("C:\\Users\\Admin\\Desktop\\lib java\\Order.txt");
 			BufferedWriter bWriter = new BufferedWriter(fWriter);
@@ -110,18 +112,8 @@ public class Order {
 				bWriter.write(data.getName() + ";" + data.getSize() + ";" + data.getIce() + ";" + data.getSugar() + ";" + data.getTopping());
 				bWriter.newLine();
 			}
-			 Scanner sc = new Scanner(System.in);
-		        System.out.println("Input Name: ");
-		        String name = sc.nextLine();
-		        System.out.println("Input Size: ");
-		        String size = sc.nextLine();
-		        System.out.println("Input Ice: ");
-		        String ice = sc.nextLine();
-		        System.out.println("Input Sugar: ");
-		        String sugar = sc.nextLine();
-		        System.out.println("Input Topping: ");
-		        String topping = sc.nextLine();
-		        bWriter.write(name + ";" + size + ";" + ice + ";" + sugar + ";" + topping);
+			od.inputOrder();
+		        bWriter.write(od.name + ";" + od.size + ";" + od.ice + ";" + od.sugar + ";" + od.topping);
 		        bWriter.newLine();
 			bWriter.close();
 			fWriter.close();
