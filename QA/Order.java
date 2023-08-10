@@ -13,7 +13,7 @@ public class Order {
 	private String ice;
 	private String sugar;
 	private String topping;
-	
+	private String price;
 	public Order() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -30,6 +30,14 @@ public class Order {
 
 	public String getName() {
 		return name;
+	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
 	}
 
 	public void setName(String name) {
@@ -82,14 +90,29 @@ public class Order {
 		topping = sc.nextLine();
 		
 	}
-	public static ArrayList<Order> inputFileOrder(){
+
+	public static void outputFileBill(ArrayList<Order> list){
+		try {
+			FileWriter fWriter = new FileWriter("C:\\Users\\Admin\\Desktop\\lib java\\Bill.txt");
+			BufferedWriter bWriter = new BufferedWriter(fWriter);
+			for(Order data : list) {
+				bWriter.write(data.getName() + data.getSize() + ";" + data.getIce() + ";" + data.getSugar() + ";" + data.getTopping());
+				bWriter.newLine();
+			}
+			bWriter.close();
+			fWriter.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static ArrayList<Order> inputFileBill() {
 		ArrayList<Order> list = new ArrayList<Order>();
 		try {
-			FileReader fReader = new FileReader("C:\\Users\\Admin\\Desktop\\lib java\\order.txt");
+			FileReader fReader = new FileReader("C:\\\\Users\\\\Admin\\\\Desktop\\\\lib java\\\\Order.txt");
 			BufferedReader bReader = new BufferedReader(fReader);
 			while(true) {
 				String line = bReader.readLine();
-				if (line == "" || line == null) break;
+				if(line == null || line == "") break;
 				String[] temp = line.split("[;]");
 				Order data = new Order(temp[0], temp[1], temp[2], temp[3], temp[4]);
 				list.add(data);
@@ -101,50 +124,50 @@ public class Order {
 		}
 		return list;
 	}
-	
-	public static void outputFileOrder(ArrayList<Order> list) {
+
+	public static void outputFileOrder(ArrayList<Order> list ) {
 		Order od = new Order();
-		
+		Scanner sc = new Scanner(System.in);
 		try {
 			FileWriter fWriter = new FileWriter("C:\\Users\\Admin\\Desktop\\lib java\\Order.txt");
 			BufferedWriter bWriter = new BufferedWriter(fWriter);
-			for (Order data : list) {
-				bWriter.write(data.getName() + ";" + data.getSize() + ";" + data.getIce() + ";" + data.getSugar() + ";" + data.getTopping());
-				bWriter.newLine();
-			}
-			od.inputOrder();
+		    boolean exit = false;
+		    while (!exit) {
+		    	od.inputOrder();
 		        bWriter.write(od.name + ";" + od.size + ";" + od.ice + ";" + od.sugar + ";" + od.topping);
-		        bWriter.newLine();
+		        bWriter.newLine();	
+		        System.out.println("Do you want to order more? (Y/N)");
+		        String choice = sc.nextLine();  
+		        if (choice.equalsIgnoreCase("N")) {
+		            exit = true;
+		        } else if (!choice.equalsIgnoreCase("Y")) {
+		          System.out.println("Please choose again!");
+		        } 
+		    }
 			bWriter.close();
 			fWriter.close();
-		} catch (Exception e) {
+			} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
-	public void choice() {
+	public void choiceQA() {
 		Scanner sc = new Scanner(System.in);
 		ArrayList<Order> list = new ArrayList<Order>();
 		boolean exit = false;
-		System.out.println("Enter Your Choice: 1 - Input File, 2 - Output File, 3 - Enter Information For Order, 4 - Exit.");
+		System.out.println("Enter Your Choice: 1 - Order Your Drink, 2 - Print Bill, 3 - Complete The Purchase.");
 		while (!exit) {
 			int choice = sc.nextInt();
 			switch (choice) {
 			case 1:
-				list = inputFileOrder();
-				System.out.println("Input File Created. ");
-				break;
-			
-			case 2:
 				outputFileOrder(list);
-				System.out.println("Output File Created. ");
+				System.out.println("Order Has Been Completed");
 				break;
-		
+			case 2:
+				outputFileBill(list);
+				break;
 			case 3:
 				exit = true;
-				System.out.println("Program has been closed.");
 				break;
-				
 			default:
 				System.out.println("Invalid Choice!");
 				break;
@@ -153,6 +176,6 @@ public class Order {
 	}
 	public static void main(String[] args) {
 		 Order od = new Order();
-		 od.choice();
+		 od.choiceQA();
 	}
 }
